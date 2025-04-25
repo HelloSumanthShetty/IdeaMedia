@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+       <div class="w-full min-h-screen bg-zinc-800 p-10 text-white">
+        <h3 class="text-3xl  mb-5">Create Account</h3>
+         
+       <form action="api/reg" method="post">
+       <input class="px-3 py-2 rounded-lg outline-none bg-zinc-600 border-3 border-zinc-1000  "type="text" placeholder="Enter age" name="age">
+       <input class="px-3 py-2 rounded-lg outline-none bg-zinc-600 border-3 border-zinc-1000  "type="text" placeholder="Enter username" name="username">
+       <input class="px-3 py-2 rounded-lg outline-none bg-zinc-600 border-3 border-zinc-1000  "type="email" placeholder="Enter email" name="email">
+       <input class="px-3 py-2 rounded-lg outline-none bg-zinc-600 border-3 border-zinc-1000  "type="password" placeholder="Enter password" name="password">
+      <input class="px-3 py-2 rounded-lg outline-none bg-blue-600 hover:bg-green-600 transition-all font-semibold "type="submit" value="create account"> 
+    </form>
+</div>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+
+<body>
+
+    <div class="w-full min-h-screen bg-zinc-800 p-10 text-white">
+        <p class="text-3xl ml-5"><strong>HELLO ! </strong></span><span id="username">Loading...</span></p>
+        <div class="w-full flex justify-end">
+            <a class="  bg-red-400 px-3 py-2 hover:bg-red-800 transition duration 200 ease-in-out rounded-md text-white font-semibold"
+                href="login.html">logout</a>
+        </div>
+        <hr class="mt-5 border-zinc-600 border-t-2:">
+        <h5 class="mt-5 ml-10">Hey user,you can create a new post.</h5>
+        <form action="/api/post" method="post">
+            <textarea placeholder="what's going on your mind?" rows="3" name="content"
+                class=" ml-10 focus:ring-2 focus:ring-zinc-700 transition duration 200 ease-in-out focus:outline-none mt-5  bg-transparent p-2 w-2/4 block text-zinc-600 bg-zinc-100 border-7 resize-none border-zinc-500 rounded-lg"></textarea>
+            <div class="w-2/4  flex justify-end">
+                <input
+                    class="mt-5  px-3 py-2 rounded-lg outline-none bg-blue-900 hover:bg-green-600 transition duration 200 ease-in-out font-semibold "
+                    type="submit" value="Create your post">
+            </div>
+        </form>
+        <div class="posts mt-20 ">
+            <h3 class=" text-zinc-400">Your posts</h3>
+            <!-- <div class="postcontainer mt-5">
+                <div class="post w-1/3 mb-5 p-4 rounded-md border-1 border-zinc-500">
+                    <h1 class="text-blue-400 mb-5">@usernamama</h1>
+                    <p class="text-sm tracking-tight">there is lot of text that going to enter here lol my life is a
+                        waste of time i can't user my fk brain anyway</p>
+                    <div class="btn-flex mt-3">
+                        <a class="text-blue-400 text-sm">Like</a>
+                        <a class="text-sm pl-6">edit </a>
+
+                    </div>
+                </div>
+                <div class="post w-1/3 p-4 mb-5 rounded-md border-[1px] border-zinc-500">
+                    <h1 class="text-blue-400 mb-5">@usernamama</h1>
+                    <p class="text-sm tracking-tight">there is lot of text that going to enter here lol my life is a
+                        waste of time i can't user my fk brain anyway</p>
+                    <div class="btn-flex mt-3">
+                        <a class="text-blue-400 text-sm">Like</a>
+                        <a class="text-sm pl-6">edit </a>
+
+                    </div>
+                </div>
+            </div> -->
+            <!-- replace your existing postcontainer div with: -->
+<div id="postcontainer" class="postcontainer mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+   
+  </div>
+  
+        </div>
+    </div>
+    <script src="exp.js"></script>
+
+</body>
+
+</html>

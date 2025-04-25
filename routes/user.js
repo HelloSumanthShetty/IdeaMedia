@@ -1,0 +1,10 @@
+const {exp,loginuser,getall,likes,createnew,createpost}=require('../controllers/user')
+const express=require("express")
+const router=express.Router()
+const verifytoken=require("../middleware/verifytoken")
+router.route('/').get(getall)
+router.route('/like/:id').post(verifytoken,likes)
+router.route('/post').post(verifytoken,createpost)
+router.route('/reg').post(createnew)
+router.route('/login').post(loginuser)
+module.exports=router
