@@ -15,7 +15,7 @@ user:{
   },
   content:String,
   likes:{
-type:Number,
+   type:Number,
 default:0
   },
 likedby:[{

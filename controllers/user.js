@@ -4,7 +4,7 @@ const user = require("../model/user")
 const jwt = require('jsonwebtoken')
 const path = require('path')
 const customeAPIError = require('../errors/customeAPIError')
-const { error } = require("console")
+
 const verifytoken = require("../middleware/verifytoken")
 
 require("dotenv").config()
@@ -84,14 +84,14 @@ const loginuser = async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const users = await user.findOne({ email })
-        if (!users) { 
+        if (!users) {
             return res.status(400).json("user not found")
         }
         const ismatch = await bcrypt.compare(password, users.password)
         if (!ismatch) {
             throw new customeAPIError("no user found", 401)
         }
- 
+
         const tokens = jwt.sign({ userid: users._id, username: users.username, email: users.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
         console.log(tokens)
         res.cookie("tokens", tokens, {
@@ -108,48 +108,107 @@ const loginuser = async (req, res) => {
 const exp = (req, res) => {
     res.json("this is not protected")
 }
-const createpost=async(req,res)=>{
-         const {content}=req.body;
-         const result=await user.findOne({email:req.userses.email})
-         console.log({msg:result})
-         const creating=await post.create({
-            user:result._id,
-            content:content
-         })
-         console.log({msg:creating})
-         result.posts.push(creating._id)
-         await result.save()
-         //to modify the changes we need .save()
-         res.redirect('/profile')
+const createpost = async (req, res) => {
+    const { content } = req.body;
+    const result = await user.findOne({ email: req.userses.email })
+    // console.log("createpost 1")
+    //to extract the id
+    const creating = await post.create({
+        user: result._id,
+        content: content
+    })
+    // console.log("creating post 2" + creating._id)
+
+    result.posts.push(creating._id)
+    await result.save()
+    //to modify the changes we need .save()
+    res.redirect('/profile')
 }
 
-const likes=async(req,res)=>{
-//find the  post the user is liked
-    const id=req.params.id;
-//by who is it liked
-   const userid=req.userses._id;
-//retreive the post that has been liked
-   const postinfo =await post.findById(id)
-//find if the userid has already liked
-const findif= postinfo.likedby.indexOf(userid)
-if(findif===-1){
- //if there is no likes
- //also keep in mind this only works if there is no like or no likes
- postinfo.likedby.push(userid)
- postinfo.likes+=likes 
- 
-}
-else{
-    postinfo.likedby.splice(findif,1);
-    postinfo.likes-=likes
-}
-//it a modification make sure to save it 
-await postinfo.save()
+    const likes = async (req, res) => {
+    
+        const id = req.params.id;
+        // console.log("thsid:" + id)
+        
+        // console.log("hello")
+        const userId = req.userses._id
+        // console.log({ userid: userId })
+        const userid = await user.findOne({ id: req.userses._id });           
+        const userinfo = userid._id
 
-//send the likes to the frontend
-res.json({ success: true, likes: postinfo.likes });
+    // console.log(userinfo)
+        const postinfo = await post.findById(id)
+        // console.log("id:" + postinfo)
+    
+        const findif = postinfo.likedby.findIndex(id => id.toString() === userinfo.toString());
+        let islikedbycurrentuser=false;
 
-}
+        // console.log("hey" + findif)
+        if (findif === -1) {
+            // User hasn't liked yet → like
+            postinfo.likedby.push(userinfo);
+            postinfo.likes += 1;
+            islikedbycurrentuser=true;
+        } else {
+            // User already liked → unlike
+            postinfo.likedby.splice(findif, 1);
+            postinfo.likes -= 1;
+        }
+        console.log("user " + userid)
+        //it a modification make sure to save it 
+        await postinfo.save()
+
+        //send the likes to the frontend
+        res.json({
+            success:true,
+            likes: postinfo.likes,
+            likedby:postinfo.likedby,
+         islikedbycurrentuser:islikedbycurrentuser
+        })
+
+    }
+    
+
+
+
+// const likes = async (req, res) => { 
+//     //find the  post the user is liked
+//     const id = req.params.id;
+//     console.log(id)
+//     //by who is it liked
+//     console.log("hello")
+//     const userid = await post.findOne({id:req.userses._id});
+//     console.log("user "+userid)
+//     //retreive the post that has been liked
+//     const postinfo = await post.findById(id)
+//     console.log("id:"+id)
+//     //find if the userid has already liked
+//     const findif = postinfo.likedby.indexOf(userid)
+//     console.log("hey"+findif)
+//     if (findif === -1) {
+//         //if there is no likes
+//         //also keep in mind this only works if there is no like or no likes
+//         postinfo.likedby.push(userid)
+//         postinfo.likes += 1
+
+
+//     }
+//     else {
+//         //slice removethe
+//         postinfo.likedby.splice(findif, 1);
+//         postinfo.likes -= 1
+//     }
+//     console.log("user "+userid)
+//     //it a modification make sure to save it 
+//     await postinfo.save()
+
+//     //send the likes to the frontend
+//     res.josn({
+//         msg:"successs",
+//         likes:post.likes
+//     })
+
+// }
 
 module.exports = {
     getall,
