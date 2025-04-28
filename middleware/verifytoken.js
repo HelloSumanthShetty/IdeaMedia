@@ -10,9 +10,9 @@ const verifytoken=(req,res,next)=>{
 
     }
         const userverfy=jwt.verify(tokens,process.env.JWT_SECRET)
-   console.log("userverfy")
+   
         req.userses=userverfy;
-         
+        console.log("userverfy")          
     //   console.log(req.userses)
       next()
      }

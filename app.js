@@ -68,8 +68,7 @@ app.get("/profile_detail", verifytoken, async (req, res) => {
     res.status(200).json({
         username: result.username,
         email: result.email,
-        posts: result.posts
-
+        posts: result.posts,
 
     })
 

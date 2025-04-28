@@ -57,7 +57,7 @@ window.onload = async () => {
             const res = await fetch(`/api/like/${post._id}`, { method: "POST" });
             
             const result = await res.json();
-            if (!result.islikedbycurrentuser) {
+            if (result.islikedbycurrentuser) {
               likeBtn.classList.remove("text-zinc-100"); // Assuming text-zinc-100 is the default
             likeBtn.classList.add("text-green-600"); // Add the blue/liked color
               }
@@ -71,7 +71,7 @@ window.onload = async () => {
             }
             else{
               likeBtn.classList.remove("text-green-600")
-              likeBtn.classList.add("text-zinc-100")
+              likeBtn.classList.add("text-zinc-100") 
             }
         
             
@@ -144,10 +144,13 @@ window.onload = async () => {
           const res = await fetch(`/api/like/${post._id}`, { method: "POST" });
           
           const result = await res.json();
+           
           if (!result.islikedbycurrentuser) {
             likeBtn.classList.remove("text-zinc-100"); // Assuming text-zinc-100 is the default
-          likeBtn.classList.add("text-green-600"); // Add the blue/liked color
+          likeBtn.classList.add("text-green-600"); 
+
             }
+
           if (result.success) {
             likeBtn.textContent = `Like (${result.likes})`;
          
@@ -160,7 +163,7 @@ window.onload = async () => {
           else{
             likeBtn.classList.remove("text-green-600")
             likeBtn.classList.add("text-zinc-100")
-          }
+          } 
       
           
         } catch (error) {

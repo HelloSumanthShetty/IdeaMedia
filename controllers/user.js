@@ -125,16 +125,20 @@ const createpost = async (req, res) => {
     res.redirect('/profile')
 }
 
-    const likes = async (req, res) => {
+
+
+const likes = async (req, res) => {
     
         const id = req.params.id;
-        // console.log("thsid:" + id)
+         console.log("thsid:" + id)
         
         // console.log("hello")
-        const userId = req.userses._id
-        // console.log({ userid: userId })
-        const userid = await user.findOne({ id: req.userses._id });           
+       const userId = req.userses.username
+  //   const userin=await user.findOne({userId})
+       
+        const userid = await user.findOne({ username:userId });           
         const userinfo = userid._id
+       console.log("new id"+userinfo,"new if"+userid)
 
     // console.log(userinfo)
         const postinfo = await post.findById(id)
@@ -153,12 +157,13 @@ const createpost = async (req, res) => {
             // User already liked → unlike
             postinfo.likedby.splice(findif, 1);
             postinfo.likes -= 1;
+            islikedbycurrentuser=false
         }
         console.log("user " + userid)
         //it a modification make sure to save it 
         await postinfo.save()
 
-        //send the likes to the frontend
+        //send the likes to the frontend 
         res.json({
             success:true,
             likes: postinfo.likes,
