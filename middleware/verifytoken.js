@@ -13,7 +13,8 @@ const verifytoken=(req,res,next)=>{
    
         req.userses=userverfy;
         console.log("userverfy")          
-    //   console.log(req.userses)
+       
+
       next()
      }
      //req,users
@@ -24,4 +25,4 @@ const verifytoken=(req,res,next)=>{
         throw new customeAPIError("cookie has expired",401)
     }
 }
-module.exports=verifytoken 
+module.exports=verifytoken  

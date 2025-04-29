@@ -133,12 +133,12 @@ const likes = async (req, res) => {
          console.log("thsid:" + id)
         
         // console.log("hello")
-       const userId = req.userses.username
+       const userinfo = req.userses.userid
   //   const userin=await user.findOne({userId})
        
-        const userid = await user.findOne({ username:userId });           
-        const userinfo = userid._id
-       console.log("new id"+userinfo,"new if"+userid)
+    //     const userid = await user.findOne({ _id:userId });           
+    //     const userinfo = userid._id
+    //    console.log("new id"+userinfo,"new if"+userId)
 
     // console.log(userinfo)
         const postinfo = await post.findById(id)
@@ -159,7 +159,7 @@ const likes = async (req, res) => {
             postinfo.likes -= 1;
             islikedbycurrentuser=false
         }
-        console.log("user " + userid)
+      //  console.log("user " + userid)
         //it a modification make sure to save it 
         await postinfo.save()
 

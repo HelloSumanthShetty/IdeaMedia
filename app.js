@@ -32,17 +32,20 @@ app.get("/profile", verifytoken, async (req, res) => {
 
 })
 app.get("/getall_detail", verifytoken, async (req, res) => {
-    const posts = await user.find({}).limit(7).select("username posts").populate({ path: 'posts', options: { sort: { date: -1 } }, select: ("content likes date") })
+    const posts = await user.find({}).limit(7).select("username posts").populate({ path: 'posts', options: { sort: { date: -1 } }, select: ("content likes date likedby") })
     const globalposts = [];
+   const userID=req.userses.userid
    
     posts.forEach(userif => {
         userif.posts.forEach(info =>
  globalposts.push({
                 username:userif.username,
                 _id:info._id,
+                userid:userID,
                 content: info.content,
                 likes: info.likes,
-                date: info.date
+                date: info.date,
+                likedby:info.likedby
 
             })
 

@@ -1,14 +1,17 @@
 window.onload = async () => {
   console.log("please work");
 
+
+  
   try {
+
     const renderPostB=async(url)=>{
       
 
       const res = await fetch(url);
       const data = await res.json();
   
-      console.log("Fetched data:", data);
+      //console.log("Fetched data:", data);
   
       if (data.error) throw new Error(data.error);
       
@@ -45,19 +48,30 @@ window.onload = async () => {
           </div>
           <p class="text-sm text-zinc-400 mt-3">${formatDate(post.date)}</p>
         `;
-       
-        
+      
         const likeBtn = card.querySelector('.like-btn');
+        console.log("i"+post.userid)
+        for(let i=0;i<=post.likedby.length;i++){ 
+        if(post.userid==post.likedby[i]){
+         
+         console.log("3"+post.likedby);
+          
+          likeBtn.classList.remove("text-zinc-100")
+          likeBtn.classList.add("text-green-600")
+        } 
+      }
   
         likeBtn.addEventListener("click", async (e) => {
           e.preventDefault();
       
           try {
             
+            
             const res = await fetch(`/api/like/${post._id}`, { method: "POST" });
             
             const result = await res.json();
-            if (result.islikedbycurrentuser) {
+            
+            if (!result.islikedbycurrentuser) {
               likeBtn.classList.remove("text-zinc-100"); // Assuming text-zinc-100 is the default
             likeBtn.classList.add("text-green-600"); // Add the blue/liked color
               }
@@ -68,10 +82,10 @@ window.onload = async () => {
             if(likeBtn.classList.contains("text-zinc-100")){
               likeBtn.classList.remove("text-zinc-100")
               likeBtn.classList.add("text-green-600")
-            }
+            } 
             else{
               likeBtn.classList.remove("text-green-600")
-              likeBtn.classList.add("text-zinc-100") 
+              likeBtn.classList.add("text-zinc-100")
             }
         
             
@@ -89,9 +103,9 @@ window.onload = async () => {
       
 
     const res = await fetch(url);
-    const data = await res.json();
+    const data = await res.json(); 
 
-    console.log("Fetched data:", data);
+    //console.log("Fetched data:", data);
 
     if (data.error) throw new Error(data.error);
     
@@ -132,9 +146,19 @@ window.onload = async () => {
         <p class="text-sm text-zinc-400 mt-3">${formatDate(post.date)}</p>
       
         `;
-     
+        
       
       const likeBtn = card.querySelector('.like-btn');
+     for(let i=0;i<=post.likedby.length;i++){ 
+      if(post.user==post.likedby[i]){
+      //   console.log("i"+post.user)
+      //  console.log("2"+post.likedby);
+        
+        likeBtn.classList.remove("text-zinc-100")
+        likeBtn.classList.add("text-green-600")
+      }
+    }
+    
 
       likeBtn.addEventListener("click", async (e) => {
         e.preventDefault();
@@ -144,12 +168,12 @@ window.onload = async () => {
           const res = await fetch(`/api/like/${post._id}`, { method: "POST" });
           
           const result = await res.json();
-           
+         
           if (!result.islikedbycurrentuser) {
             likeBtn.classList.remove("text-zinc-100"); // Assuming text-zinc-100 is the default
-          likeBtn.classList.add("text-green-600"); 
-
+          likeBtn.classList.add("text-green-600"); // Add the blue/liked color
             }
+     
 
           if (result.success) {
             likeBtn.textContent = `Like (${result.likes})`;
