@@ -1,10 +1,12 @@
-const {exp,loginuser,getall,likes,createnew,createpost}=require('../controllers/user')
+const {deleteAccount,exp,loginuser,getall,likes,createnew,createpost,deletePost,editPost}=require('../controllers/user')
 const express=require("express")
 const router=express.Router()
 const verifytoken=require("../middleware/verifytoken")
 router.route('/').get(getall)
 router.route('/like/:id').post(verifytoken,likes)
+router.route('/user/:id').delete(verifytoken,deletePost).patch(verifytoken,editPost)
 router.route('/post').post(verifytoken,createpost)
+router.route("/del").delete(verifytoken,deleteAccount)
 router.route('/reg').post(createnew)
 router.route('/login').post(loginuser)
-module.exports=router
+module.exports=router  

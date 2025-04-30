@@ -51,7 +51,7 @@ app.get("/getall_detail", verifytoken, async (req, res) => {
 
         )
     }) 
-
+ 
 
  
     res.json({
@@ -103,7 +103,10 @@ app.use(errorhandler)
 
 const port = 3000
 const start = async () => {
-    app.listen(port, console.log(`server is listening at ${port}`))
+    app.listen(3000, '0.0.0.0', () => {
+        console.log("Server running on http://0.0.0.0:3000");
+      });
+      
     await connectdb(process.env.MONGO_URL)
 }
 start()

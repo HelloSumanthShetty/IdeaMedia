@@ -125,6 +125,124 @@ const createpost = async (req, res) => {
     res.redirect('/profile')
 }
 
+const deletePost = async (req, res) => {
+    // try {
+    //     const postId = req.params.id;
+
+    //     const postinfo = await post.findById(postId);
+
+    //     if (!postinfo) {
+    //      throw new customeAPIError("the post is not available or has been deleted",404);
+    //     }
+
+      
+    //     if (postinfo.user.toString() !== req.userses.userid) {
+    //         return res.status(403).json({ error: "Unauthorized action" });
+    //     }
+
+    //     // Remove post
+    //     await post.findByIdAndDelete(postId);
+
+    //     // Also remove reference from User.posts
+    //     await user.findByIdAndUpdate(postinfo.user, { 
+    //         $pull: { posts: postId }
+    //     });
+
+    //     res.json({ success: true, message: "Post deleted successfully" });
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+    try {
+        const thepost=req.params.id
+        const postinfo=await post.findById(thepost)
+        if(!postinfo){
+            throw new customeAPIError("The post not found",404)
+        }
+        
+        if(!postinfo.user.toString()==req.userses.userid){
+            throw new customeAPIError("unautherized attement",403)
+        }
+        await post.findByIdAndDelete(postinfo)
+await user.findByIdAndUpdate(req.userses.userId,{
+    $pull:{post:thepost}
+})
+res.json({
+    success:true,
+    msg:"the post has been successfully deleted"
+})
+    } catch (error) {
+        res.status(500).json(
+        error.message
+        )
+    }
+}
+
+const editPost = async (req, res) => {
+    // try {
+    //     const postId = req.params.id;
+    //     const { content } = req.body;
+
+    //     const postinfo = await post.findById(postId);
+
+    //     if (!postinfo) {
+    //         return res.status(404).json({ error: "Post not found" });
+    //     }
+
+    //     // Only the owner can edit
+    //     if (postinfo.user.toString() !== req.userses.userid) {
+    //         return res.status(403).json({ error: "Unauthorized action" });
+    //     }
+
+    //     postinfo.content = content;
+    //     await postinfo.save();
+
+    //     res.json({ success: true, message: "Post updated successfully" });
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+    try {
+       const postid=req.params.id
+    const userinfo=req.userses.userid;
+    const postinfo=await post.findById(postid)
+    if(!postinfo){
+        throw new customeAPIError("the post has not been found",404)
+    }
+    if(postinfo.user.toString()!==userinfo){
+    throw new customeAPIError("sorry you are not autherized",403)
+    }
+    const result=await post.findByIdAndUpdate(postid,req.body,{
+        runValidators:true,
+        new:true
+    })
+
+res.status(200).json(
+    result
+)
+    } catch (error) {
+        res.status(500).json(error.message)
+        
+    }
+}
+const deleteAccount = async (req, res) => {
+ 
+    try {
+        useracc=req.userses.userid
+        const finduser=await user.findById(useracc)
+        if(!finduser){
+            throw new customeAPIError("the user don't exit",404)
+        }
+        await  post.deleteMany({user:useracc})
+        await user.findByIdAndDelete(useracc)
+        res.clearCookie("tokens")
+        res.status(200).json({
+            success:true,
+            msg:"your account has been deleted"
+        })
+       } catch (error) {
+        res.status(500).json(error.message)
+       }
+}
+
 
 
 const likes = async (req, res) => {
@@ -142,7 +260,7 @@ const likes = async (req, res) => {
 
     // console.log(userinfo)
         const postinfo = await post.findById(id)
-        // console.log("id:" + postinfo)
+         console.log("id:" + postinfo)
     
         const findif = postinfo.likedby.findIndex(id => id.toString() === userinfo.toString());
         let islikedbycurrentuser=false;
@@ -218,8 +336,11 @@ const likes = async (req, res) => {
 module.exports = {
     getall,
     createnew,
+    deletePost,
     createpost,
     loginuser,
     exp,
-    likes
+    likes,
+    deleteAccount,
+    editPost
 }
